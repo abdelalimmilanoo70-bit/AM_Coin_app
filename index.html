@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AM Coin Mining - Cyberpunk Edition</title>
+    <title>AM Coin Mining</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -13,7 +13,6 @@
             --cyan-glow: #00f2fe;
             --blue-accent: #4facfe;
             --gold-main: #f59e0b;
-            --gold-light: #fef08a;
             --text-main: #f8fafc;
             --text-muted: #64748b;
             --neon-green: #10b981;
@@ -32,8 +31,7 @@
         body {
             background-color: var(--bg-deep);
             background-image: 
-                radial-gradient(circle at 50% 30%, rgba(0, 242, 254, 0.15) 0%, transparent 60%),
-                radial-gradient(circle at 50% 80%, rgba(79, 172, 254, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 30%, rgba(0, 242, 254, 0.12) 0%, transparent 60%),
                 linear-gradient(to bottom, #030712, #070f21);
             color: var(--text-main);
             min-height: 100vh;
@@ -41,19 +39,6 @@
             flex-direction: column;
             overflow: hidden;
             position: relative;
-        }
-
-        /* Circuit Board Overlay Background */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: 
-                linear-gradient(rgba(0, 242, 254, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 242, 254, 0.03) 1px, transparent 1px);
-            background-size: 30px 30px;
-            pointer-events: none;
-            z-index: 0;
         }
 
         .app-container {
@@ -70,7 +55,7 @@
             overflow-y: auto;
         }
 
-        /* Top Bar Profile */
+        /* Top Bar */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -80,7 +65,6 @@
             border: 1px solid var(--border-glow);
             padding: 10px 16px;
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 242, 254, 0.1);
         }
 
         .user-info {
@@ -100,24 +84,6 @@
             font-weight: bold;
             color: #030712;
             border: 2px solid var(--cyan-glow);
-            box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
-        }
-
-        .user-details h4 {
-            font-size: 14px;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .badge-lvl {
-            font-size: 10px;
-            background: rgba(0, 242, 254, 0.15);
-            color: var(--cyan-glow);
-            padding: 2px 8px;
-            border-radius: 12px;
-            border: 1px solid rgba(0, 242, 254, 0.3);
         }
 
         .wallet-pill {
@@ -130,15 +96,15 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            cursor: pointer;
         }
 
-        /* Main Mine View */
+        /* Views */
         .view-section {
             display: none;
             flex-direction: column;
             align-items: center;
             flex: 1;
-            justify-content: space-between;
             margin-top: 15px;
         }
 
@@ -146,35 +112,23 @@
             display: flex;
         }
 
-        /* Score Display */
+        /* Assets Card */
         .assets-card {
             text-align: center;
-            background: linear-gradient(180deg, rgba(11, 21, 40, 0.8) 0%, rgba(3, 7, 18, 0.9) 100%);
+            background: linear-gradient(180deg, rgba(11, 21, 40, 0.9) 0%, rgba(3, 7, 18, 0.95) 100%);
             border: 1px solid var(--border-glow);
-            padding: 16px 28px;
+            padding: 16px 20px;
             border-radius: 24px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(0, 242, 254, 0.1);
             width: 100%;
-        }
-
-        .assets-title {
-            font-size: 12px;
-            letter-spacing: 2px;
-            color: var(--cyan-glow);
-            text-transform: uppercase;
-            font-weight: 700;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
         }
 
         .score-val {
-            font-size: 38px;
+            font-size: 36px;
             font-weight: 900;
-            color: #ffffff;
-            text-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
+            color: #fff;
             margin: 4px 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            text-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
         }
 
         .profit-rate {
@@ -190,60 +144,34 @@
             font-weight: 600;
         }
 
-        /* Cyberpunk Coin */
+        /* Coin Button */
         .coin-wrapper {
             position: relative;
-            margin: 20px 0;
+            margin: 25px 0;
             cursor: pointer;
         }
 
-        .coin-glow-bg {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 250px; height: 250px;
-            background: radial-gradient(circle, rgba(0, 242, 254, 0.3) 0%, rgba(79, 172, 254, 0.1) 50%, transparent 70%);
-            border-radius: 50%;
-            animation: pulseGlow 3s infinite alternate;
-            pointer-events: none;
-        }
-
-        @keyframes pulseGlow {
-            0% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.6; }
-            100% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
-        }
-
         .cyber-coin {
-            width: 220px;
-            height: 220px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
             background: linear-gradient(135deg, #fcd34d 0%, #f59e0b 50%, #b45309 100%);
-            border: 8px solid #00f2fe;
-            box-shadow: 
-                0 0 30px rgba(0, 242, 254, 0.8),
-                inset 0 0 20px rgba(255, 255, 255, 0.6),
-                inset 0 0 40px rgba(0, 0, 0, 0.8);
+            border: 6px solid var(--cyan-glow);
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.6), inset 0 0 20px rgba(255,255,255,0.5);
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            transition: transform 0.08s ease-out;
+            transition: transform 0.08s ease;
         }
 
-        .cyber-coin::before {
-            content: '';
-            position: absolute;
-            inset: 6px;
-            border-radius: 50%;
-            border: 2px dashed rgba(3, 7, 18, 0.6);
+        .cyber-coin:active {
+            transform: scale(0.93);
         }
 
         .coin-inner-logo {
-            font-size: 54px;
+            font-size: 48px;
             font-weight: 900;
             color: #030712;
-            text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
-            letter-spacing: -2px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -251,116 +179,57 @@
 
         .coin-inner-logo span {
             font-size: 10px;
-            letter-spacing: 3px;
-            margin-top: -6px;
+            letter-spacing: 2px;
         }
 
-        .cyber-coin:active {
-            transform: scale(0.93);
-        }
-
-        /* Floating +1 Effect */
         .float-text {
             position: absolute;
-            font-size: 28px;
-            font-weight: 900;
+            font-size: 24px;
+            font-weight: bold;
             color: var(--cyan-glow);
-            text-shadow: 0 0 10px rgba(0, 242, 254, 0.9);
             pointer-events: none;
-            animation: floatUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            animation: floatUp 0.7s ease-out forwards;
             z-index: 10;
         }
 
         @keyframes floatUp {
             0% { opacity: 1; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(-100px) scale(1.4); }
+            100% { opacity: 0; transform: translateY(-80px) scale(1.3); }
         }
 
-        /* Energy Section */
+        /* Energy Box */
         .energy-box {
             width: 100%;
             background: rgba(11, 21, 40, 0.8);
             border: 1px solid var(--border-glow);
-            padding: 14px;
-            border-radius: 20px;
-            margin-bottom: 10px;
+            padding: 12px 16px;
+            border-radius: 16px;
         }
 
         .energy-header {
             display: flex;
             justify-content: space-between;
             font-size: 13px;
-            margin-bottom: 8px;
-        }
-
-        .energy-label {
+            margin-bottom: 6px;
             color: var(--cyan-glow);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .energy-val {
-            font-weight: 700;
-            color: #fff;
         }
 
         .energy-bar-track {
-            height: 12px;
-            background: rgba(3, 7, 18, 0.8);
-            border-radius: 10px;
+            height: 10px;
+            background: #030712;
+            border-radius: 8px;
             overflow: hidden;
             border: 1px solid rgba(0, 242, 254, 0.2);
-            padding: 2px;
         }
 
         .energy-bar-fill {
             height: 100%;
             background: linear-gradient(90deg, #00f2fe, #4facfe);
-            border-radius: 8px;
             width: 100%;
-            box-shadow: 0 0 12px rgba(0, 242, 254, 0.8);
-            transition: width 0.2s ease;
+            transition: width 0.2s;
         }
 
-        /* Navigation Bar */
-        .nav-bar {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            height: 70px;
-            background: rgba(7, 15, 33, 0.92);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid var(--border-glow);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 100;
-            max-width: 480px;
-            margin: 0 auto;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            color: var(--text-muted);
-            font-size: 11px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            flex: 1;
-        }
-
-        .nav-item i {
-            font-size: 20px;
-        }
-
-        .nav-item.active {
-            color: var(--cyan-glow);
-            text-shadow: 0 0 10px rgba(0, 242, 254, 0.6);
-        }
-
-        /* Generic Task / Store Cards */
+        /* Cards & Lists */
         .card-item {
             background: rgba(11, 21, 40, 0.7);
             border: 1px solid var(--border-glow);
@@ -380,7 +249,7 @@
         }
 
         .card-icon {
-            width: 42px; height: 42px;
+            width: 40px; height: 40px;
             border-radius: 12px;
             background: rgba(0, 242, 254, 0.1);
             border: 1px solid rgba(0, 242, 254, 0.3);
@@ -388,19 +257,6 @@
             align-items: center;
             justify-content: center;
             color: var(--cyan-glow);
-            font-size: 18px;
-        }
-
-        .card-info h5 {
-            font-size: 14px;
-            color: #fff;
-            margin-bottom: 2px;
-        }
-
-        .card-info p {
-            font-size: 12px;
-            color: var(--neon-green);
-            font-weight: 600;
         }
 
         .btn-action {
@@ -412,24 +268,50 @@
             font-weight: 700;
             font-size: 13px;
             cursor: pointer;
-            box-shadow: 0 0 12px rgba(0, 242, 254, 0.4);
         }
 
         .btn-action:disabled {
             opacity: 0.5;
-            cursor: not-allowed;
             background: var(--text-muted);
-            box-shadow: none;
         }
 
         .section-header {
             width: 100%;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             text-align: right;
+            color: var(--cyan-glow);
+            font-size: 18px;
+            font-weight: bold;
         }
 
-        .section-header h3 {
-            font-size: 20px;
+        /* Navigation Bar */
+        .nav-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: 70px;
+            background: rgba(7, 15, 33, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-glow);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-muted);
+            font-size: 11px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .nav-item.active {
             color: var(--cyan-glow);
         }
     </style>
@@ -441,33 +323,29 @@
         <div class="top-bar">
             <div class="user-info">
                 <div class="user-avatar" id="avatar">AM</div>
-                <div class="user-details">
-                    <h4 id="username">المستخدم <span class="badge-lvl">Lvl 1</span></h4>
-                    <span style="font-size: 11px; color: var(--neon-green);">ONLINE</span>
+                <div>
+                    <h4 id="username" style="font-size: 13px;">مستخدم</h4>
+                    <span style="font-size: 10px; color: var(--neon-green);">ONLINE</span>
                 </div>
             </div>
-            <div class="wallet-pill">
+            <div class="wallet-pill" onclick="connectWallet()">
                 <i class="fa-solid fa-wallet"></i>
-                <span>AM Chain</span>
+                <span id="walletBtnText">ربط المحفظة</span>
             </div>
         </div>
 
         <!-- MINE VIEW -->
         <div class="view-section active" id="view-mine">
             <div class="assets-card">
-                <div class="assets-title">رصيد عملة AM</div>
-                <div class="score-val">
-                    <span id="score">0</span>
-                    <span style="font-size: 18px; color: var(--cyan-glow);">AM</span>
-                </div>
+                <div style="font-size: 12px; color: var(--text-muted);">رصيد عملة AM</div>
+                <div class="score-val" id="score">0.00</div>
                 <div class="profit-rate">
                     <i class="fa-solid fa-bolt"></i>
-                    <span>+1 AM / نقرة</span>
+                    <span>+0.003 / نقرة</span>
                 </div>
             </div>
 
             <div class="coin-wrapper" id="coinBtn">
-                <div class="coin-glow-bg"></div>
                 <div class="cyber-coin">
                     <div class="coin-inner-logo">
                         AM
@@ -478,8 +356,8 @@
 
             <div class="energy-box">
                 <div class="energy-header">
-                    <span class="energy-label"><i class="fa-solid fa-bolt"></i> الطاقة المتبقية</span>
-                    <span class="energy-val"><span id="energy">1000</span> / 1000</span>
+                    <span>⚡ الطاقة المتبقية</span>
+                    <span><span id="energy">1000</span> / 1000</span>
                 </div>
                 <div class="energy-bar-track">
                     <div class="energy-bar-fill" id="energyBar"></div>
@@ -489,199 +367,230 @@
 
         <!-- TASKS VIEW -->
         <div class="view-section" id="view-tasks">
-            <div class="section-header">
-                <h3>المهام والمكافآت 🎯</h3>
-            </div>
+            <div class="section-header">المهام والمكافآت 🎯</div>
             <div class="card-item">
                 <div class="card-left">
                     <div class="card-icon"><i class="fa-brands fa-telegram"></i></div>
-                    <div class="card-info">
-                        <h5>الاشتراك في قناة AM</h5>
-                        <p>+100 AM</p>
+                    <div>
+                        <h5 style="font-size: 13px;">الانضمام إلى القناة الرسمية</h5>
+                        <p style="font-size: 11px; color: var(--neon-green);">+30 AM</p>
                     </div>
                 </div>
-                <button class="btn-action" onclick="claimTask(this, 100)">تنفيذ</button>
-            </div>
-            <div class="card-item">
-                <div class="card-left">
-                    <div class="card-icon"><i class="fa-brands fa-x-twitter"></i></div>
-                    <div class="card-info">
-                        <h5>متابعة حساب X</h5>
-                        <p>+50 AM</p>
-                    </div>
-                </div>
-                <button class="btn-action" onclick="claimTask(this, 50)">تنفيذ</button>
+                <button class="btn-action" id="taskBtn" onclick="claimChannelTask()">تنفيذ</button>
             </div>
         </div>
 
         <!-- MINERS STORE VIEW -->
         <div class="view-section" id="view-miners">
-            <div class="section-header">
-                <h3>أجهزة التعدين الأوتوماتيكي ⚡</h3>
-            </div>
-            <div class="card-item">
-                <div class="card-left">
-                    <div class="card-icon"><i class="fa-solid fa-microchip"></i></div>
-                    <div class="card-info">
-                        <h5>كرت تعدين مبتدئ</h5>
-                        <p>+10 AM / ساعة</p>
-                    </div>
-                </div>
-                <button class="btn-action" onclick="buyMiner(500, 10)">شراء (500)</button>
-            </div>
+            <div class="section-header">أجهزة التعدين التلقائي ⚡</div>
+            <div id="minersList"></div>
         </div>
 
         <!-- FRIENDS VIEW -->
         <div class="view-section" id="view-friends">
-            <div class="section-header">
-                <h3>دعوة الأصدقاء 👥</h3>
-            </div>
-            <div class="assets-card" style="margin-bottom: 20px;">
-                <p style="font-size: 14px; color: var(--text-muted);">احصل على +200 AM عن كل صديق تقوم بدعوته!</p>
-                <button class="btn-action" style="width: 100%; margin-top: 15px;" onclick="copyReferral()">نسخ رابط الدعوة 🔗</button>
+            <div class="section-header">دعوة الأصدقاء 👥</div>
+            <div class="assets-card">
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">احصل على +100 AM عن كل صديق تقوم بدعوته!</p>
+                <button class="btn-action" style="width: 100%;" onclick="copyReferral()">نسخ رابط الدعوة 🔗</button>
             </div>
         </div>
 
         <!-- PROFILE VIEW -->
         <div class="view-section" id="view-profile">
-            <div class="section-header">
-                <h3>الملف الشخصي 👤</h3>
+            <div class="section-header">الملف الشخصي 👤</div>
+            <div class="card-item" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+                <div style="font-size: 13px;">اسم المستخدم: <span id="profileName" style="color: var(--cyan-glow);">--</span></div>
+                <div style="font-size: 13px;">معرف المستخدم (ID): <span id="userId" style="color: var(--cyan-glow);">--</span></div>
+                <div style="font-size: 13px;">الحد الأدنى للسحب: <span style="color: var(--gold-main);">7,000 AM</span></div>
             </div>
-            <div class="card-item">
-                <div class="card-left">
-                    <div class="card-icon"><i class="fa-solid fa-id-card"></i></div>
-                    <div class="card-info">
-                        <h5>معرف المستخدم</h5>
-                        <p id="userId" style="color: var(--cyan-glow);">#956252664</p>
-                    </div>
-                </div>
-            </div>
+            <button class="btn-action" style="width: 100%; margin-top: 10px; background: #334155; color: #94a3b8; cursor: not-allowed;" disabled>عملية السحب ستتوفر قريباً 🔒</button>
         </div>
     </div>
 
     <!-- Navigation Bar -->
     <div class="nav-bar">
-        <div class="nav-item active" onclick="switchTab('mine', this)">
-            <i class="fa-solid fa-pickaxe"></i>
-            <span>تعدين</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('tasks', this)">
-            <i class="fa-solid fa-list-check"></i>
-            <span>المهام</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('miners', this)">
-            <i class="fa-solid fa-server"></i>
-            <span>الأجهزة</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('friends', this)">
-            <i class="fa-solid fa-user-group"></i>
-            <span>الأصدقاء</span>
-        </div>
-        <div class="nav-item" onclick="switchTab('profile', this)">
-            <i class="fa-solid fa-user"></i>
-            <span>حسابي</span>
-        </div>
+        <div class="nav-item active" onclick="switchTab('mine', this)"><i class="fa-solid fa-pickaxe" style="font-size: 18px;"></i><span>تعدين</span></div>
+        <div class="nav-item" onclick="switchTab('tasks', this)"><i class="fa-solid fa-list-check" style="font-size: 18px;"></i><span>المهام</span></div>
+        <div class="nav-item" onclick="switchTab('miners', this)"><i class="fa-solid fa-server" style="font-size: 18px;"></i><span>الأجهزة</span></div>
+        <div class="nav-item" onclick="switchTab('friends', this)"><i class="fa-solid fa-user-group" style="font-size: 18px;"></i><span>الأصدقاء</span></div>
+        <div class="nav-item" onclick="switchTab('profile', this)"><i class="fa-solid fa-user" style="font-size: 18px;"></i><span>حسابي</span></div>
     </div>
 
     <script>
-        let score = parseInt(localStorage.getItem('am_score')) || 0;
+        let score = parseFloat(localStorage.getItem('am_score')) || 0;
         let energy = parseInt(localStorage.getItem('am_energy')) || 1000;
-        const maxEnergy = 1000;
+        let taskCompleted = localStorage.getItem('am_task_done') === 'true';
+        let walletConnected = localStorage.getItem('am_wallet') || '';
 
+        // تفاصيل الأجهزة والمستويات المتعددة
+        let minersData = [
+            { id: 1, name: 'جهاز تعدين مبتدئ (المستوى 1)', cost: 100, rate: 0.5, unlocked: (localStorage.getItem('miner_1') === 'true' || score >= 100) },
+            { id: 2, name: 'جهاز تعدين متطور (المستوى 2)', cost: 500, rate: 2.5, unlocked: localStorage.getItem('miner_2') === 'true' },
+            { id: 3, name: 'منجم توربو الاحترافي (المستوى 3)', cost: 2000, rate: 10, unlocked: localStorage.getItem('miner_3') === 'true' },
+            { id: 4, name: 'مجمع سيرفرات كمومي (المستوى 4)', cost: 6000, rate: 35, unlocked: localStorage.getItem('miner_4') === 'true' }
+        ];
+
+        const maxEnergy = 1000;
         const scoreEl = document.getElementById('score');
         const energyEl = document.getElementById('energy');
         const energyBar = document.getElementById('energyBar');
         const coinBtn = document.getElementById('coinBtn');
 
-        scoreEl.innerText = score;
+        scoreEl.innerText = score.toFixed(3);
         energyEl.innerText = energy;
         energyBar.style.width = (energy / maxEnergy * 100) + '%';
 
-        // Telegram WebApp Setup
         const tg = window.Telegram.WebApp;
         tg.expand();
 
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            document.getElementById('username').innerText = tg.initDataUnsafe.user.first_name;
-            document.getElementById('avatar').innerText = tg.initDataUnsafe.user.first_name.substring(0, 2).toUpperCase();
-            document.getElementById('userId').innerText = '#' + tg.initDataUnsafe.user.id;
+            let uName = tg.initDataUnsafe.user.first_name;
+            let uId = tg.initDataUnsafe.user.id;
+            document.getElementById('username').innerText = uName;
+            document.getElementById('profileName').innerText = uName;
+            document.getElementById('avatar').innerText = uName.substring(0, 2).toUpperCase();
+            document.getElementById('userId').innerText = '#' + uId;
+        } else {
+            document.getElementById('profileName').innerText = 'مستخدم تجريبي';
+            document.getElementById('userId').innerText = '#5270127488';
         }
 
-        // Tap Event
+        if(walletConnected) {
+            document.getElementById('walletBtnText').innerText = 'متصل TON';
+        }
+
+        // النقر اليدوي بقيمة 0.003
         coinBtn.addEventListener('click', (e) => {
             if (energy > 0) {
-                score++;
+                score += 0.003;
                 energy--;
+                updateUI();
+                checkAutoUnlock();
 
-                scoreEl.innerText = score;
-                energyEl.innerText = energy;
-                energyBar.style.width = (energy / maxEnergy * 100) + '%';
-
-                localStorage.setItem('am_score', score);
-                localStorage.setItem('am_energy', energy);
-
-                if (tg.HapticFeedback) {
-                    tg.HapticFeedback.impactOccurred('medium');
-                }
-
+                if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
                 createFloatingText(e.clientX, e.clientY);
             }
         });
 
-        // Floating Text (+1)
+        function updateUI() {
+            scoreEl.innerText = score.toFixed(3);
+            energyEl.innerText = energy;
+            energyBar.style.width = (energy / maxEnergy * 100) + '%';
+            localStorage.setItem('am_score', score);
+            localStorage.setItem('am_energy', energy);
+            renderMiners();
+        }
+
         function createFloatingText(x, y) {
             const el = document.createElement('div');
             el.className = 'float-text';
-            el.innerText = '+1';
+            el.innerText = '+0.003';
             const rect = coinBtn.getBoundingClientRect();
             el.style.left = (x || (rect.left + rect.width / 2)) + 'px';
             el.style.top = (y || (rect.top + rect.height / 2)) + 'px';
             document.body.appendChild(el);
-            setTimeout(() => el.remove(), 800);
+            setTimeout(() => el.remove(), 700);
         }
 
-        // Energy Regen
+        // التعدين التلقائي الأول يفتح عند 100 عملة تلقائياً
+        function checkAutoUnlock() {
+            if (score >= 100 && !minersData[0].unlocked) {
+                minersData[0].unlocked = true;
+                localStorage.setItem('miner_1', 'true');
+                alert('تهانينا! لقد وصلت إلى 100 عملة وتم تفعيل جهاز التعدين التلقائي الأول تلقائياً!');
+            }
+        }
+
+        // حساب الأرباح التلقائية لكل الأجهزة المفعلة كل ثانية
         setInterval(() => {
             if (energy < maxEnergy) {
                 energy = Math.min(maxEnergy, energy + 2);
-                energyEl.innerText = energy;
-                energyBar.style.width = (energy / maxEnergy * 100) + '%';
-                localStorage.setItem('am_energy', energy);
             }
+            let totalRatePerSec = 0;
+            minersData.forEach(m => {
+                if(m.unlocked) totalRatePerSec += (m.rate / 3600);
+            });
+            if(totalRatePerSec > 0) {
+                score += totalRatePerSec;
+            }
+            updateUI();
         }, 1000);
 
-        // Navigation Tabs
-        function switchTab(tabName, el) {
-            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            
-            document.getElementById('view-' + tabName).classList.add('active');
-            el.classList.add('active');
+        function renderMiners() {
+            let container = document.getElementById('minersList');
+            container.innerHTML = '';
+            minersData.forEach(m => {
+                container.innerHTML += `
+                    <div class="card-item">
+                        <div class="card-left">
+                            <div class="card-icon"><i class="fa-solid fa-microchip"></i></div>
+                            <div>
+                                <h5 style="font-size: 13px;">${m.name}</h5>
+                                <p style="font-size: 11px; color: var(--neon-green);">+${m.rate} AM / ساعة</p>
+                            </div>
+                        </div>
+                        <button class="btn-action" ${m.unlocked ? 'disabled' : ''} onclick="buyMiner(${m.id})">
+                            ${m.unlocked ? 'مفعل ✅' : 'شراء (' + m.cost + ')'}
+                        </button>
+                    </div>
+                `;
+            });
         }
 
-        function claimTask(btn, amount) {
-            score += amount;
-            scoreEl.innerText = score;
-            localStorage.setItem('am_score', score);
+        function buyMiner(id) {
+            let miner = minersData.find(m => m.id === id);
+            if (score >= miner.cost) {
+                score -= miner.cost;
+                miner.unlocked = true;
+                localStorage.setItem('miner_' + id, 'true');
+                updateUI();
+                alert('تم تفعيل الجهاز بنجاح!');
+            } else {
+                alert('رصيدك غير كافٍ لشراء هذا الجهاز!');
+            }
+        }
+
+        // المهام (مهمة واحدة: القناة الرسمية 30 عملة)
+        if(taskCompleted) {
+            let btn = document.getElementById('taskBtn');
             btn.disabled = true;
             btn.innerText = 'تم ✅';
         }
 
-        function buyMiner(cost, rate) {
-            if (score >= cost) {
-                score -= cost;
-                scoreEl.innerText = score;
-                localStorage.setItem('am_score', score);
-                alert('تم شراء جهاز التعدين بنجاح!');
-            } else {
-                alert('رصيدك غير كافٍ!');
+        function claimChannelTask() {
+            if(!taskCompleted) {
+                window.open('https://t.me/your_channel_link', '_blank');
+                score += 30;
+                taskCompleted = true;
+                localStorage.setItem('am_task_done', 'true');
+                let btn = document.getElementById('taskBtn');
+                btn.disabled = true;
+                btn.innerText = 'تم ✅';
+                updateUI();
+                alert('تمت إضافة 30 عملة بنجاح!');
             }
         }
 
         function copyReferral() {
             navigator.clipboard.writeText('https://t.me/AM_Coin_Mining_bot?start=ref123');
-            alert('تم نسخ رابط الدعوة!');
+            alert('تم نسخ رابط الدعوة! ستحصل على 100 عملة لكل صديق.');
         }
+
+        function connectWallet() {
+            walletConnected = 'TON_WALLET_CONNECTED';
+            localStorage.setItem('am_wallet', walletConnected);
+            document.getElementById('walletBtnText').innerText = 'متصل TON';
+            alert('تم ربط محفظة تون (TON Connect) بنجاح!');
+        }
+
+        function switchTab(tabName, el) {
+            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('view-' + tabName).classList.add('active');
+            el.classList.add('active');
+        }
+
+        renderMiners();
     </script>
 </body>
 </html>
