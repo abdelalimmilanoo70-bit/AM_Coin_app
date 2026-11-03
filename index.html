@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AM Coin Mining</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { background: #0f172a; color: #fff; font-family: sans-serif; text-align: center; padding-top: 50px; }
+        .coin { font-size: 50px; margin: 20px; cursor: pointer; background: #38bdf8; border-radius: 50%; width: 120px; height: 120px; line-height: 120px; display: inline-block; box-shadow: 0 0 20px rgba(56,189,248,0.5); }
+    </style>
+</head>
+<body>
+    <h1>AM Coin Mining</h1>
+    <p>رصيدك: <span id="score">0</span></p>
+    <div class="coin" onclick="tapCoin()">🪙</div>
+    <script>
+        let score = 0;
+        function tapCoin() {
+            score++;
+            document.getElementById('score').innerText = score;
+            if (window.Telegram && window.Telegram.WebApp) {
+                window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+            }
+        }
+    </script>
+</body>
+</html>
